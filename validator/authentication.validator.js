@@ -28,6 +28,7 @@ const validator = {
         email: Joi.string().email(),
         phone: Joi.number(),
         url: Joi.string().required(),
+        resume: Joi.string().required(),
         fileType: Joi.string().required(),
         age: Joi.number(),
         experience: Joi.number(),

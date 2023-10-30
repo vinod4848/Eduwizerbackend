@@ -35,6 +35,9 @@ const usersSchemaNew = mongoose.Schema(
     url: {
       type: String,
     },
+    resume: {
+      type: String,
+    },
     type: {
       type: String,
     },
