@@ -143,7 +143,7 @@ const controllers = {
     let response;
     try {
       let { teacherId } = req.query;
-      console.log("teacherId===", teacherId);
+      // console.log("teacherId===", teacherId);
       let data = await adminDashboardService.getTeachersData(teacherId);
       if (data) {
         response = {
@@ -256,7 +256,7 @@ const controllers = {
     let response;
     try {
       let { aboutChancellorId } = req.query;
-      console.log("aboutChancellorId===", aboutChancellorId);
+      // console.log("aboutChancellorId===", aboutChancellorId);
       let data = await adminDashboardService.getAboutChancellorsData(
         aboutChancellorId
       );
@@ -375,7 +375,7 @@ const controllers = {
     let response;
     try {
       let { testimonialId } = req.query;
-      console.log("testimonialId===", testimonialId);
+      // console.log("testimonialId===", testimonialId);
       let data = await adminDashboardService.getTestimonialsData(testimonialId);
       if (data) {
         response = {
@@ -489,7 +489,7 @@ const controllers = {
     let response;
     try {
       let { featuredListId } = req.query;
-      console.log("featuredListId===", featuredListId);
+      // console.log("featuredListId===", featuredListId);
       let data = await adminDashboardService.getFeaturedListingsData(
         featuredListId
       );
@@ -611,7 +611,7 @@ const controllers = {
     let response;
     try {
       let { awardsAndRecognitionId } = req.query;
-      console.log("awardsAndRecognitionId===", awardsAndRecognitionId);
+      // console.log("awardsAndRecognitionId===", awardsAndRecognitionId);
       let data = await adminDashboardService.getAwardsAndRecognitionsData(
         awardsAndRecognitionId
       );
