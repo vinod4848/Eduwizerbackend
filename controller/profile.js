@@ -294,7 +294,7 @@ const controllers = {
     if (req.payload && req.payload.userId) {
       await profileService.updateProfile({
         userId: req.payload.userId,
-        resumeURL: resume,
+        resume: resume,
       });
   
       const apiKey = sgMail.setApiKey(process.env.EMAIL_PROVIDER_AUTH_PASSWORD);
