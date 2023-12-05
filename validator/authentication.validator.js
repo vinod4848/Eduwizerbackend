@@ -1,4 +1,4 @@
-const Joi = require('./validator')
+const Joi = require("./validator");
 
 const validator = {
   loginValidator: async function (req, res, next) {
@@ -6,15 +6,15 @@ const validator = {
       const login = Joi.object({
         userName: Joi.string().max(100).optional(),
         email: Joi.string().lowercase().email().optional(),
-        password: Joi.string().max(25).required()
-      }).xor('userName', 'email')
-      const { error } = await login.validateAsync(req.body)
+        password: Joi.string().max(25).required(),
+      }).xor("userName", "email");
+      const { error } = await login.validateAsync(req.body);
       if (error) {
-        throw error
+        throw error;
       }
-      next()
+      next();
     } catch (error) {
-      res.status(400).json({ success: 0, data: [], message: error.message })
+      res.status(400).json({ success: 0, data: [], message: error.message });
     }
   },
 
@@ -38,38 +38,38 @@ const validator = {
         city: Joi.string(),
         userType: Joi.string(),
         board: Joi.string()
-          .valid('icse', 'cbse', 'igse', 'state board', 'ib')
-          .error(new Error('Board must be ICSE, CBSE, IGSE, State Board, IB')),
-        preference: Joi.string()
-          // .valid('school', 'college', 'private institutions')
-          // .error(new Error('Preference must be School, College, Private Institutions'))
-      })
+          .valid("icse", "cbse", "igse", "state board", "ib")
+          .error(new Error("Board must be ICSE, CBSE, IGSE, State Board, IB")),
+        preference: Joi.string(),
+        // .valid('school', 'college', 'private institutions')
+        // .error(new Error('Preference must be School, College, Private Institutions'))
+      });
 
-      const { error, value } = await signUpSchema.validateAsync(req.body)
+      const { error, value } = await signUpSchema.validateAsync(req.body);
 
       if (error) {
-        throw error
+        throw error;
       }
 
-      next()
+      next();
     } catch (error) {
-      res.status(400).json({ success: 0, data: [], message: error.message })
+      res.status(400).json({ success: 0, data: [], message: error.message });
     }
   },
 
   sendOtp: async function (req, res, next) {
     try {
       const otp = Joi.object({
-        userId: Joi.string().required()
-      })
-      req.body = await otp.validateAsync(req.body)
-      const { error, value } = await otp.validateAsync(req.body)
+        userId: Joi.string().required(),
+      });
+      req.body = await otp.validateAsync(req.body);
+      const { error, value } = await otp.validateAsync(req.body);
       if (error) {
-        throw error
+        throw error;
       }
-      next()
+      next();
     } catch (error) {
-      res.status(400).json({ success: 0, data: [], message: error.message })
+      res.status(400).json({ success: 0, data: [], message: error.message });
     }
   },
 
@@ -77,18 +77,17 @@ const validator = {
     try {
       const otp = Joi.object({
         code: Joi.number().required(),
-        userId: Joi.string().required()
-      })
-      req.body = await otp.validateAsync(req.body)
-      const { error, value } = await otp.validateAsync(req.body)
+        userId: Joi.string().required(),
+      });
+      req.body = await otp.validateAsync(req.body);
+      const { error, value } = await otp.validateAsync(req.body);
       if (error) {
-        throw error
+        throw error;
       }
-      next()
+      next();
     } catch (error) {
-      res.status(400).json({ success: 0, data: [], message: error.message })
+      res.status(400).json({ success: 0, data: [], message: error.message });
     }
-  }
-
-}
-module.exports = validator
+  },
+};
+module.exports = validator;
