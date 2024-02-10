@@ -21,15 +21,17 @@ const services = {
         }
         return data
     },
-    updateUserDetails : async  function (find,update,option){
-        let data = {}
+    updateUserDetails: async function (find, update, option) {
+        let data = {};
         try {
-            data = userModel.updateUserData(find,update,option)
-        } catch(error) {
-            console.error(error)
+          data = await userModel.updateUserData(find, update, option);
+        } catch (error) {
+          console.error(error);
+          throw error;
         }
-        return data
-    },
+        return data;
+      },
+      
     userOtpModel : async function (body) {
         let addUserOtpData = {}
         try {

@@ -68,11 +68,25 @@ module.exports = function (app) {
     .route("/eduwizer/verify/otp")
     .post(authenticationValidator.verifyOtp, authentication.verifyOtp);
 
+  app
+    .route("/eduwizer/forgotPassword")
+    .post(
+      authenticationValidator.forgotPassword,
+      authentication.forgotPassword
+    );
+
+  app
+    .route("/eduwizer/setNewPassword")
+    .post(
+      authenticationValidator.setNewPasswordValidator,
+      authentication.setNewPassword
+    );
+
   //Vendor Package routes
   app.post("/createpackage", async (req, res) => {
     try {
-      const { prize, specialPrize, user  } = req.body;
-      const newPackage = new Package({ prize, specialPrize, user  });
+      const { prize, specialPrize, user } = req.body;
+      const newPackage = new Package({ prize, specialPrize, user });
       const savedPackage = await newPackage.save();
       res.status(201).json(savedPackage);
     } catch (error) {
@@ -86,7 +100,7 @@ module.exports = function (app) {
   app.get("/packages", async (req, res) => {
     try {
       const packages = await Package.find();
-      console.log(packages, "sfbshfbfh")
+      console.log(packages, "sfbshfbfh");
       res.json(packages);
     } catch (error) {
       res
@@ -98,7 +112,7 @@ module.exports = function (app) {
   app.get("/package/:id", async (req, res) => {
     try {
       const package = await Package.findById(req.params.id);
-      console.log(package, "sfbshfbfh")
+      console.log(package, "sfbshfbfh");
       if (!package) {
         res.status(404).json({ error: "Package not found" });
       } else {
@@ -133,7 +147,6 @@ module.exports = function (app) {
   });
 
   // READ a single package by ID
-
 
   // UPDATE a package by ID
   app.put("/updatepackage/:id", async (req, res) => {

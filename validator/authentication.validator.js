@@ -72,7 +72,25 @@ const validator = {
       res.status(400).json({ success: 0, data: [], message: error.message });
     }
   },
+  forgotPassword: async function (req, res, next) {
+    try {
+      const forgotPasswordSchema = Joi.object({
+        email: Joi.string().email().required(),
+      });
 
+      const { error, value } = await forgotPasswordSchema.validateAsync(
+        req.body
+      );
+
+      if (error) {
+        throw error;
+      }
+
+      next();
+    } catch (error) {
+      res.status(400).json({ success: 0, data: [], message: error.message });
+    }
+  },
   verifyOtp: async function (req, res, next) {
     try {
       const otp = Joi.object({
@@ -84,6 +102,26 @@ const validator = {
       if (error) {
         throw error;
       }
+      next();
+    } catch (error) {
+      res.status(400).json({ success: 0, data: [], message: error.message });
+    }
+  },
+
+  setNewPasswordValidator: async function (req, res, next) {
+    try {
+      const setPasswordSchema = Joi.object({
+        token: Joi.string().required(),
+        newPassword: Joi.string().required(),
+      });
+      
+
+      const { error, value } = await setPasswordSchema.validateAsync(req.body);
+
+      if (error) {
+        throw error;
+      }
+
       next();
     } catch (error) {
       res.status(400).json({ success: 0, data: [], message: error.message });

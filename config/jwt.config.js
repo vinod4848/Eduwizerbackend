@@ -78,6 +78,18 @@ module.exports = {
     }
   },
 
+  verifyToken: function (token, secret) {
+    return new Promise(function (resolve, reject) {
+      jwt.verify(token, secret, function (err, authorizedata) {
+        if (err) {
+          reject(false);
+        } else {
+          resolve(authorizedata.payload);
+        }
+      });
+    });
+  },
+
   checkAuthorizationKey: function (req, res, next) {
     try {
       const { access_key } = req.headers

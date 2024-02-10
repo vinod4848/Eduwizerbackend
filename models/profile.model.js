@@ -187,6 +187,8 @@ const usersSchemaNew = mongoose.Schema(
     resumeURL: {
       type: String,
     },
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
   },
   { strict: false }
 );
@@ -199,9 +201,9 @@ try {
 }
 
 const models = {
-  dbUpdateUser: async function (updatedFields) {
+  dbUpdateUserData: async function (userId, updatedFields) {
     try {
-      const filter = { _id: mongoose.Types.ObjectId(updatedFields.userId) };
+      const filter = { _id: mongoose.Types.ObjectId(userId) };
       const update = { $set: { ...updatedFields } };
       const options = { returnOriginal: false, new: false, upsert: true };
 
@@ -223,6 +225,30 @@ const models = {
       throw error;
     }
   },
+  // dbUpdateUser: async function (updatedFields) {
+  //   try {
+  //     const filter = { _id: mongoose.Types.ObjectId(updatedFields.userId) };
+  //     const update = { $set: { ...updatedFields } };
+  //     const options = { returnOriginal: false, new: false, upsert: true };
+
+  //     console.log("Filter: ", filter);
+  //     console.log("Update: ", update);
+  //     console.log("Options: ", options);
+
+  //     const result = await userInformationIthoutStrict.updateOne(
+  //       filter,
+  //       update,
+  //       options
+  //     );
+
+  //     console.log("Result: ", result);
+
+  //     return result;
+  //   } catch (error) {
+  //     console.error(error);
+  //     throw error;
+  //   }
+  // },
   dbGetUsersData: async function (find, select, sort, skip, limit) {
     let data;
     try {
@@ -253,4 +279,3 @@ const models = {
 };
 
 module.exports = models;
-

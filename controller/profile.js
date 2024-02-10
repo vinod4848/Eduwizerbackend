@@ -12,35 +12,38 @@ const controllers = {
     let response;
     try {
       req.body.userId = req.payload.userId;
-
-      let data = await profileService.updateProfile(req.body);
-
-      if (data && data.nModified > 0) {
+  
+      const data = await profileService.updateProfile(req.body);
+  
+      if (data && data.n > 0) {
         response = {
           success: 1,
           data: data,
-          message: "Sucessfully Updated User",
+          message: "Successfully Updated User",
         };
       } else {
         response = {
           success: 0,
-          data: data,
-          message: "Error While Updating User",
+          data: {},
+          message: "No user was updated. User may not exist or data did not change.",
         };
       }
     } catch (error) {
       console.error(error);
+  
       response = {
         success: 0,
         data: {},
-        message: error.message,
+        message: "Error updating user: " + error.message,
       };
-      if (response.message.includes("E11000 duplicate key error collection")) {
+  
+      if (error.code === 11000) {
         response.message = "Email Already Exists";
       }
     }
     return res.send(response);
   },
+  
 
   serachProfile: async function (req, res) {
     let response;

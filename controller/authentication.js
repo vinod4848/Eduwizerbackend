@@ -237,6 +237,121 @@ const controllers = {
     }
     return res.send(response);
   },
+  forgotPassword: async function (req, res) {
+    let response;
+    try {
+      const find = { email: req.body.email };
+      const select = {
+        _id: 1,
+        email: 1,
+      };
+
+      const userData = await authenticationService.getUserDetailsByUserId(
+        find,
+        select
+      );
+
+      if (userData) {
+        // Generate a unique token for password reset
+        const resetToken = await jwtConfig.generateToken(
+          { userId: userData._id },
+          process.env.secret,
+          { expiresIn: "1h" } // Set expiration time for the reset token
+        );
+
+        // Construct the reset link
+        const resetLink = `http://localhost:3000/setNewPassword/${resetToken}`;
+
+        // Send an email with a link to reset password
+        const apiKey = sgMail.setApiKey(
+          process.env.EMAIL_PROVIDER_AUTH_PASSWORD
+        );
+        const msg = {
+          to: userData.email,
+          from: "ngeduwizer@gmail.com",
+          subject: "Eduwizer - Password Reset",
+          text: `Hello,\n\nPlease click on the following link to reset your password: ${resetLink}\n\nThank you,\nThe Eduwizer Team`,
+          html: `<p>Hello,</p><p>Please click on the following link to reset your password: <a href="${resetLink}">${resetLink}</a></p><p>Thank you,<br>The Eduwizer Team</p>`,
+        };
+
+        await apiKey.send(msg);
+
+        // Include the reset link in the response
+        response = {
+          success: 1,
+          resetLink,
+          message:
+            "Password reset link sent to your email. Please check your inbox.",
+        };
+      } else {
+        throw new Error("User Not Found");
+      }
+    } catch (error) {
+      console.error(error);
+      response = {
+        success: 0,
+        message: error.message,
+      };
+    }
+    return res.send(response);
+  },
+  setNewPassword: async function (req, res) {
+    let response;
+    try {
+      const { token, newPassword } = req.body;
+
+      const decodedToken = await jwtConfig.verifyToken(
+        token,
+        process.env.secret
+      );
+      console.log("Decoded token:", decodedToken);
+
+      // Check if the token is valid
+      if (decodedToken) {
+        const find = { _id: decodedToken.userId };
+        const updateData = {
+          $set: {
+            password: newPassword,
+          },
+        };
+        const option = {
+          new: true,
+        };
+
+        console.log("Update Data:", updateData);
+        console.log("Option ygesdgjigyxdoylxrifxuif:", option);
+
+        // Update the user's password
+        const updatedUser = await authenticationService.updateUserDetails(
+          find,
+          updateData,
+          option
+        );
+        console.log("Updated user:", updatedUser);
+
+        if (updatedUser) {
+          response = {
+            success: 1,
+            data: updatedUser,
+            message: "Password successfully updated",
+          };
+        } else {
+          throw new Error("Internal Server Error");
+        }
+      } else {
+        throw new Error("Invalid or expired token");
+      }
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        success: 0,
+        data: [],
+        message: error.message,
+      });
+    }
+
+    return res.send(response);
+  },
   loginFromGoogle: async function () {},
 
   loginFromLinkedin: async function () {},
