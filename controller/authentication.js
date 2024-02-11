@@ -260,7 +260,7 @@ const controllers = {
         );
 
         // Construct the reset link
-        const resetLink = `http://localhost:3000/setNewPassword/${resetToken}`;
+        const resetLink = `https://eduwizer.com/setNewPassword/${resetToken}`;
 
         // Send an email with a link to reset password
         const apiKey = sgMail.setApiKey(
